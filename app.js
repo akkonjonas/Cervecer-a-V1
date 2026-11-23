@@ -111,7 +111,8 @@ async function handleSession(session) {
     if (!session) {
       S.user = null; S.perfil = null; lastUid = null;
       if (channel) { sb.removeChannel(channel); channel = null; }
-      await loadPublic(); ui.view = 'login'; render(true); return;
+      try { await loadPublic(); } catch (e) { console.error(e); toast('No se pudo leer el menú: ' + (e?.message || 'error')); }
+      ui.view = 'login'; render(true); return;
     }
     if (session.user.id === lastUid && S.perfil) return;
     lastUid = session.user.id; S.user = session.user;
@@ -501,7 +502,13 @@ document.addEventListener('click', async e => {
         const { error } = await sb.auth.resetPasswordForEmail(em, { redirectTo: BASE }); if (error) return fail(error);
         toast('Te mandamos un email para crear una contraseña nueva'); break;
       }
-      case 'logout': await sb.auth.signOut(); ui.cart = { cliente: [], mozo: [], barra: [] }; ui.auth = 'inicio'; break;
+      case 'logout': {
+        ui.cart = { cliente: [], mozo: [], barra: [] }; ui.auth = 'inicio';
+        try { await sb.auth.signOut(); } catch {}
+        // por si el cierre no llega al servidor: borra la sesión guardada en este celular
+        try { Object.keys(localStorage).filter(k => k.startsWith('sb-')).forEach(k => localStorage.removeItem(k)); } catch {}
+        location.replace(BASE); break;
+      }
       case 'add': add(r, k); break;
       case 'qty': qty(r, +k, +b.dataset.d); break;
       case 'send': await send(r); break;
