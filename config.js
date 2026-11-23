@@ -1,10 +1,10 @@
 // Configuración de la conexión con Supabase.
-// Supabase > Project Settings > API: copiá la "Project URL" y la clave "publishable" (o "anon").
+// Supabase > botón "Connect" (o Settings > API Keys): Project URL y clave "publishable".
 // Estas dos son públicas y pueden ir en el repositorio: la seguridad la ponen las reglas de la base.
-// NUNCA pongas acá la clave "service_role" / "secret" ni la contraseña de la base.
+// NUNCA pongas acá la clave "secret" (sb_secret_...) ni la contraseña de la base.
 
-export const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
-export const SUPABASE_KEY = 'TU-CLAVE-PUBLISHABLE';
+export const SUPABASE_URL = 'https://prnrrnythbhbqdwdbaim.supabase.co';
+export const SUPABASE_KEY = 'sb_publishable_Q9InQTf_8X8h-cVC_Z3Ykw_Z6mTWy4m';
 
 // Redes sociales activadas en Supabase > Authentication > Sign In / Providers.
 // Dejá solo las que ya configuraste. Opciones: 'google', 'facebook', 'apple'
